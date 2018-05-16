@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { RootState } from '../store/store';
+import { Login } from './Login';
+import { Home } from './Home';
 // import logo from './logo.svg';
 
 type StateProps = {
@@ -13,7 +15,8 @@ class AppComponent extends React.Component<StateProps> {
     return (
       <div>
         {this.props.isLoggedIn ? null : <Redirect to="/login" />}
-        <Route path="/login" component={} />
+        <Route path="/login" component={Login} />
+        <Route path="/" exact component={Home} />
       </div>
     );
   }

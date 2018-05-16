@@ -1,9 +1,23 @@
 import { socket } from './socket';
-import { ClientEvent, User } from '../model/model';
+import { ClientEvent, User, Room, ClientEventPayload } from '../constant/constant';
 import { dispatch } from '../store/store';
 
-socket.on(ClientEvent.SELF_JOIN_ROOM, (user: User) => {
-  dispatch.user.loginAndRemember(user)
+socket.on(ClientEvent.SELF_JOIN_ROOM, (room: ClientEventPayload['SELF_JOIN_ROOM']) => {
+  dispatch.currentRoom.selfJoinRoom(room);
+});
+
+socket.on(ClientEvent.OTHER_JOIN_ROOM, (other: ClientEventPayload['OTHER_JOIN_ROOM']) => {
+  dispatch.currentRoom.otherJoinRoom(other);
+});
+
+socket.on(ClientEvent.SELF_LEAVE_ROOM, () => {
+  dispatch.currentRoom.selfLeaveRoom();
+});
+
+socket.on(ClientEvent.OTHER_LEAVE_ROOM, (user: ClientEventPayload['OTHER_LEAVE_ROOM']) => {
+  dispatch.currentRoom.otherLeaveRoom(user);
 })
 
-socket.
+socket.on(ClientEvent.GET_ROOM_LIST, (rooms: ClientEventPayload['GET_ROOM_LIST']) => {
+  dispatch.roomList.updateRoomList(rooms);
+})

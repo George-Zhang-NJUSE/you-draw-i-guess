@@ -1,14 +1,13 @@
 import { Model } from '@rematch/core';
-import { User } from '../model/model';
+import { User, ServerEvent } from '../constant/constant';
+import { socket } from '../netAccess/socket';
 
-type UserModel = {
-  state: User | null
-};
+export type UserState = User | null;
 
 const storage = localStorage.getItem('user');
-const initState: User | null = storage && JSON.parse(storage);
+const initState: UserState = storage && JSON.parse(storage);
 
-export const user: Model & UserModel = {
+export const user: Model & { state: UserState } = {
   state: initState,
   reducers: {
     login(state, loggedUser: User) {
@@ -16,11 +15,18 @@ export const user: Model & UserModel = {
     }
   },
   effects: {
-    loginAndRemember(loggedUser: User, rootState) {
+    /**
+     * 获取到用户id后将维持登录状态，除非用户手动删除localStorage
+     * 若删除后，下次登录将分配新的userId
+     * @param loggedUser 
+     * @param rootState 
+     */
+    loginAndRemember(loggedUser: User, rootState) { 
       this.login(loggedUser, undefined);
       localStorage.setItem('user', JSON.stringify(loggedUser));
+    },
+    requestLogin(userName: string) {  
+      socket.emit(ServerEvent.LOGIN, userName);
     }
   }
 };
-
-export type UserState = UserModel['state'];
