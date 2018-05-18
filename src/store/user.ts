@@ -1,6 +1,6 @@
 import { Model } from '@rematch/core';
-import { User, ServerEvent } from '../constant/constant';
-import { socket } from '../netAccess/socket';
+import { User, ServerEvent, ServerEventPayload } from '../constant/constant';
+import { socket } from '../net/socket';
 
 export type UserState = User | null;
 
@@ -19,14 +19,13 @@ export const user: Model & { state: UserState } = {
      * 获取到用户id后将维持登录状态，除非用户手动删除localStorage
      * 若删除后，下次登录将分配新的userId
      * @param loggedUser 
-     * @param rootState 
      */
-    loginAndRemember(loggedUser: User, rootState) { 
+    loginAndRemember(loggedUser: User) {
       this.login(loggedUser, undefined);
       localStorage.setItem('user', JSON.stringify(loggedUser));
     },
-    requestLogin(userName: string) {  
-      socket.emit(ServerEvent.LOGIN, userName);
+    requestLogin(userName: string) {
+      socket.emit(ServerEvent.LOGIN, { userName } as ServerEventPayload['LOGIN']);
     }
   }
 };

@@ -9,4 +9,4 @@ export const chat: Model & { state: ChatState } = {
     'currentRoom/selfLeaveRoom': (): ChatState => [],
     newMessage: (state: ChatState, message: ChatMessage): ChatState => state.concat(message)
   }
-}
+};

@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { socket } from '../netAccess/socket';
+import { socket } from '../net/socket';
 import { ServerEvent, ServerEventPayload } from '../constant/constant';
 import { FormEventHandler, ChangeEventHandler } from 'react';
 
 type State = {
   newRoomName: string
   shouldShowForm: boolean
-}
+};
 
 export class ActionBar extends React.Component<{}, State> {
 
   state: State = {
     newRoomName: '',
     shouldShowForm: false
-  }
+  };
 
   handleInputChange: ChangeEventHandler<HTMLInputElement> = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value } as any);
   }
-
 
   handleClickNewRoom = () => {
     this.setState({ shouldShowForm: true });

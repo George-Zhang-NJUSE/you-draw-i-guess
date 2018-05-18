@@ -17,12 +17,13 @@
       true,
       "always"
     ],
+    "jsx-boolean-value": false,
     "ordered-imports": false,
     "member-access": false,
     "quotemark": [
       true,
       "single",
       "jsx-double"
-    ],
+    ]
   }
 }

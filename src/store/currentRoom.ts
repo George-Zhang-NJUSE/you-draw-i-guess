@@ -10,13 +10,13 @@ export const currentRoom: Model & { state: CurrentRoomState } = {
       return room;
     },
     otherJoinRoom(state: Room, user: User): CurrentRoomState {
-      return { ...state, players: state.players.concat(user) }
+      return { ...state, players: state.players.concat(user) };
     },
     selfLeaveRoom(state): CurrentRoomState {
       return null;
     },
     otherLeaveRoom(state: Room, other: User): CurrentRoomState {
-      return { ...state, players: state.players.filter(p => p.userId !== other.userId) }
+      return { ...state, players: state.players.filter(p => p.userId !== other.userId) };
     }
   }
 };

@@ -1,6 +1,6 @@
 import { Model } from '@rematch/core';
 import { Room, ServerEvent } from '../constant/constant';
-import { socket } from '../netAccess/socket';
+import { socket } from '../net/socket';
 
 export type RoomListState = Room[];
 
