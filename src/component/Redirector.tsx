@@ -23,7 +23,7 @@ class RedirectorComponent extends React.Component<Props> {
 
   render() {
 
-    const { isLoggedIn, currentRoom, location } = this.props;
+    const { isLoggedIn, currentRoom, history: { location } } = this.props;
 
     const rules: RedirectRule[] = [
       { condition: !isLoggedIn, to: '/login' },

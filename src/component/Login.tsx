@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { RootState } from '../store/store';
 import { ChangeEventHandler, FormEventHandler } from 'react';
+import { User } from '../constant/constant';
 
 type DispatchProps = {
-  requestLogin: (userName: string) => void
+  requestLogin: (userData: Partial<User>) => void
 };
 
-type StateProps = {
-  isLoggedIn: boolean
-};
-
-type Props = DispatchProps & StateProps;
+type Props = DispatchProps;
 
 type State = {
   userName: string
@@ -26,7 +21,7 @@ class LoginComponent extends React.Component<Props, State> {
 
   handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    this.props.requestLogin(this.state.userName);
+    this.props.requestLogin({ userName: this.state.userName });
   }
 
   handleInputChange: ChangeEventHandler<HTMLInputElement> = event => {
@@ -35,9 +30,6 @@ class LoginComponent extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.props.isLoggedIn) {
-      return <Redirect to="/" />;
-    }
     const { userName } = this.state;
     return (
       <form onSubmit={this.handleSubmit} onChange={this.handleInputChange as any}>
@@ -50,12 +42,8 @@ class LoginComponent extends React.Component<Props, State> {
 
 }
 
-const mapState = (state: RootState): StateProps => ({
-  isLoggedIn: !!state.user
-});
-
 const mapDispatch = (dispatch: any): DispatchProps => ({
   requestLogin: dispatch.user.requestLogin
 });
 
-export const Login = connect<StateProps, DispatchProps>(mapState, mapDispatch)(LoginComponent);
+export const Login = connect<{}, DispatchProps>(undefined, mapDispatch)(LoginComponent);

@@ -4,11 +4,8 @@ import { socket } from '../net/socket';
 
 export type UserState = User | null;
 
-const storage = localStorage.getItem('user');
-const initState: UserState = storage && JSON.parse(storage);
-
 export const user: Model & { state: UserState } = {
-  state: initState,
+  state: null,
   reducers: {
     login(state, loggedUser: User) {
       return loggedUser;
@@ -24,8 +21,12 @@ export const user: Model & { state: UserState } = {
       this.login(loggedUser, undefined);
       localStorage.setItem('user', JSON.stringify(loggedUser));
     },
-    requestLogin(userName: string) {
-      socket.emit(ServerEvent.LOGIN, { userName } as ServerEventPayload['LOGIN']);
+    /**
+     * 请求用户登录
+     * @param userData 若为新用户，则只包含用户名；否则包含完整数据
+     */
+    requestLogin(userData: Partial<User>) {
+      socket.emit(ServerEvent.LOGIN, userData as ServerEventPayload['LOGIN']);
     }
   }
 };
